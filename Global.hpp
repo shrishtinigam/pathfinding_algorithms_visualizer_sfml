@@ -32,7 +32,7 @@ namespace gbl
 		constexpr unsigned char RESIZE = 1;
 
 		constexpr unsigned short HEIGHT = 720;
-		constexpr unsigned short WIDTH = 1280;
+		constexpr unsigned short WIDTH = 1930;
 
 		//This will make the program run at 60 FPS.
 		//Because 1 second == 1,000,000 microseconds

@@ -1,6 +1,7 @@
 #include <array>
 #include <chrono>
 #include <queue>
+#include <stack>
 #include <SFML/Graphics.hpp>
 
 #include "DrawText.hpp"
@@ -9,17 +10,9 @@
 #include "GetMouseCell.hpp"
 #include "Astar.hpp"
 #include "BFS.hpp"
+#include "DFS.hpp"
 #include "Dijkstra.hpp"
 
-//Hey, you wanna play a game?
-//I'm gonna think of a number between 1 and 20 and you need to guess what it is.
-//Ready?
-//Go!
-//...
-//...
-//Well?
-//No answer?
-//That's okay. If you're wondering, I was thinking of 5.28648567285.
 
 int main()
 {
@@ -40,7 +33,25 @@ int main()
 	gbl::Map<float> bfs_distances = {};
 	//----------------< Breadth-first search end >----------------
 
+	//----------------< Depth-first search start >----------------
+	bool dfs_finished = 0;
+
+	unsigned short dfs_path_length = 0;
+	unsigned short dfs_total_checks = 0;
+
+	std::chrono::microseconds dfs_duration(0);
+
+	std::map<gbl::Position<>, gbl::Position<>> dfs_previous_cell;
+
+	std::stack<gbl::Position<>> dfs_path_stack;
+
+	gbl::Map<> dfs_map = {};
+
+	gbl::Map<float> dfs_distances = {};
+	//----------------< Depth-first search end >----------------
+
 	//----------------< Dijkstra's algorithm start >----------------
+
 	bool dijkstra_finished = 0;
 
 	unsigned short dijkstra_path_length = 0;
@@ -111,6 +122,7 @@ int main()
 	}
 
 	bfs_map = map;
+	dfs_map = map;
 	dijkstra_map = map;
 	astar_map = map;
 
@@ -264,6 +276,10 @@ int main()
 
 				bfs_reset(bfs_finished, bfs_path_length, bfs_total_checks, bfs_duration, bfs_previous_cell, bfs_path_queue, bfs_distances, start_position, bfs_map);
 
+				dfs_map = map;
+
+				dfs_reset(dfs_finished, dfs_path_length, dfs_total_checks, dfs_duration, dfs_previous_cell, dfs_path_stack, dfs_distances, start_position, dfs_map);
+
 				dijkstra_map = map;
 
 				dijkstra_reset(dijkstra_finished, dijkstra_path_length, dijkstra_total_checks, dijkstra_duration, dijkstra_previous_cell, dijkstra_path_queue, dijkstra_distances, start_position, dijkstra_map);
@@ -280,7 +296,10 @@ int main()
 				{
 					bfs_finished = bfs_search(bfs_path_length, bfs_total_checks, bfs_duration, bfs_previous_cell, bfs_path_queue, bfs_distances, finish_position, start_position, bfs_map);
 				}
-
+				if (0 == dfs_finished)
+				{
+					dfs_finished = dfs_search(dfs_path_length, dfs_total_checks, dfs_duration, dfs_previous_cell, dfs_path_stack, dfs_distances, finish_position, start_position, dfs_map);
+				}
 				if (0 == dijkstra_finished)
 				{
 					dijkstra_finished = dijkstra_search(dijkstra_path_length, dijkstra_total_checks, dijkstra_duration, dijkstra_previous_cell, dijkstra_path_queue, dijkstra_distances, finish_position, start_position, dijkstra_map);
@@ -298,12 +317,14 @@ int main()
 				window.clear();
 
 				draw_map(0, 0, finish_position, start_position, window, map_sprite, bfs_map, 1, bfs_distances);
-				draw_map(0.5f * gbl::SCREEN::WIDTH, 0, finish_position, start_position, window, map_sprite, dijkstra_map, 1, dijkstra_distances);
+				draw_map(0.33f * gbl::SCREEN::WIDTH, 0, finish_position, start_position, window, map_sprite, dfs_map, 1, dfs_distances);
+				draw_map(0.67f * gbl::SCREEN::WIDTH, 0, finish_position, start_position, window, map_sprite, dijkstra_map, 1, dijkstra_distances);
 				draw_map(0, 0.5f * gbl::SCREEN::HEIGHT, finish_position, start_position, window, map_sprite, astar_map, 1, astar_g_scores);
 
 				draw_stats(0.625f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, bfs_path_length, bfs_total_checks, bfs_duration, "BFS", window, font_texture);
-				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, dijkstra_path_length, dijkstra_total_checks, dijkstra_duration, "Dijkstra", window, font_texture);
-				draw_stats(0.75f * gbl::SCREEN::WIDTH, 0.875f * gbl::SCREEN::HEIGHT, astar_path_length, astar_total_checks, astar_duration, "A star", window, font_texture);
+				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, dfs_path_length, bfs_total_checks, bfs_duration, "DFS", window, font_texture);
+				draw_stats(0.625f * gbl::SCREEN::WIDTH, 0.875f * gbl::SCREEN::HEIGHT, dijkstra_path_length, dijkstra_total_checks, dijkstra_duration, "Dijkstra", window, font_texture);
+				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.875f * gbl::SCREEN::HEIGHT, astar_path_length, astar_total_checks, astar_duration, "A star", window, font_texture);
 
 				window.display();
 			}
