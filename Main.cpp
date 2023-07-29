@@ -323,7 +323,7 @@ int main()
 				draw_map(0, 0.5f * gbl::SCREEN::HEIGHT, finish_position, start_position, window, map_sprite, astar_map, 1, astar_g_scores);
 
 				draw_stats(0.625f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, bfs_path_length, bfs_total_checks, bfs_duration, "BFS", window, font_texture);
-				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, dfs_path_length, bfs_total_checks, bfs_duration, "DFS", window, font_texture);
+				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.625f * gbl::SCREEN::HEIGHT, dfs_path_length, dfs_total_checks, dfs_duration, "DFS", window, font_texture);
 				draw_stats(0.625f * gbl::SCREEN::WIDTH, 0.875f * gbl::SCREEN::HEIGHT, dijkstra_path_length, dijkstra_total_checks, dijkstra_duration, "Dijkstra", window, font_texture);
 				draw_stats(0.875f * gbl::SCREEN::WIDTH, 0.875f * gbl::SCREEN::HEIGHT, astar_path_length, astar_total_checks, astar_duration, "A star", window, font_texture);
 
