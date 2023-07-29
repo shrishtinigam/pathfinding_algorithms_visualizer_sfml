@@ -1,6 +1,7 @@
 #include <array>
 #include <chrono>
 #include <queue>
+#include <utility>
 #include <stack>
 #include <SFML/Graphics.hpp>
 
@@ -79,7 +80,7 @@ int main()
 
 	std::map<gbl::Position<>, gbl::Position<>> astar_previous_cell;
 
-	std::vector<gbl::Position<>> astar_path_vector;
+	std::priority_queue <std::pair<int, gbl::Position<>>> astar_path_minheap;
 
 	gbl::Map<> astar_map = {};
 
@@ -113,7 +114,7 @@ int main()
 	gbl::Position<> finish_position(gbl::MAP::COLUMNS - 1, gbl::MAP::ROWS - 1);
 	gbl::Position<> start_position(0, 0);
 
-	//This is used to draw lines of cells.
+	// This is used to draw lines of cells.
 	gbl::Position<short> mouse_cell_start;
 
 	for (std::array<gbl::MAP::Cell, gbl::MAP::ROWS>& column : map)
@@ -286,7 +287,7 @@ int main()
 
 				astar_map = map;
 
-				astar_reset(astar_finished, astar_path_length, astar_total_checks, astar_duration, astar_previous_cell, astar_path_vector, astar_f_scores, astar_g_scores, astar_h_scores, finish_position, start_position, astar_map);
+				astar_reset(astar_finished, astar_path_length, astar_total_checks, astar_duration, astar_previous_cell, astar_path_minheap, astar_f_scores, astar_g_scores, astar_h_scores, finish_position, start_position, astar_map);
 			}
 
 			//Search!
@@ -307,7 +308,7 @@ int main()
 
 				if (0 == astar_finished)
 				{
-					astar_finished = astar_search(astar_path_length, astar_total_checks, astar_duration, astar_previous_cell, astar_path_vector, astar_f_scores, astar_g_scores, astar_h_scores, finish_position, start_position, astar_map);
+					astar_finished = astar_search(astar_path_length, astar_total_checks, astar_duration, astar_previous_cell, astar_path_minheap, astar_f_scores, astar_g_scores, astar_h_scores, finish_position, start_position, astar_map);
 				}
 			}
 
