@@ -21,6 +21,7 @@ BFS, DFS, A Star and Dijkstra Algorithms visualized using C++ and SFML
 * Here, in the first 'int', I store the f score of the cell, multiplied by (-1). This way, the cells with the minimum f scores rise up to the top.
 
 ### Running the code
+#### Top left: BFS, Top Middle: DFS, Top Right: Dijkstra's, Bottom Left: A Star
 ![image](https://github.com/shrishtinigam/pathfinding_algorithms_visualizer_sfml/assets/72018363/a99d1097-c013-41f2-98c1-e303ac0ad93b)
 
 ![image](https://github.com/shrishtinigam/pathfinding_algorithms_visualizer_sfml/assets/72018363/3427ace5-1194-43f9-80b9-855a41ce80a2)
